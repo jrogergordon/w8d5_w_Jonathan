@@ -93,7 +93,6 @@ Function.prototype.curry = function(numArgs) {
     let that = this;
     argsLen = [];
     const _curry = function(n){
-        console.log(that);
         argsLen.push(n);
         if (argsLen.length === numArgs){
             return that(...argsLen);
@@ -105,9 +104,53 @@ Function.prototype.curry = function(numArgs) {
 };
 
 
+// Function.prototype.inherits = function(sup) {
+//     //make this inherit from sup class
+//     function Surrogate() {};
+//     Surrogate.prototype = sup.prototype;
+//     this.prototype = new Surrogate;
+//     this.prototype.constructor = this;
+// }
+
+Function.prototype.inherits = function(sup) {
+    
+    this.prototype = Object.create(sup.prototype);
+}
+
+function MovingObject (name) {
+    this.name = name;
+};
+
+MovingObject.prototype.moveSound = function () {
+    console.log("wheee");
+}
+
+Ship.inherits(MovingObject);
+
+function Ship (name) {
+    this.name = name;
+};
+
+Ship.prototype.flySound = function () {
+    console.log("shhhhhhh")
+};
+
+Asteroid.inherits(MovingObject);
+function Asteroid (name) {
+    this.name = name;
+};
+
+Asteroid.prototype.bang = function() {
+    console.log("chshhhh");
+}
+
+const ast = new Asteroid("ast");
+console.log(ast.name);
+ast.bang();
+ast.moveSound();
+
+const moveobj = new MovingObject("moveobj");
+moveobj.moveSound();
+moveobj.bang();
 
 
-// console.log(sum(1, 2, 3, 4));
-
-const cs = sum.curry(4);
-console.log(cs(1)(2)(3)(4));
